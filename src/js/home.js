@@ -86,6 +86,22 @@ function traerUser(){
   console.log('animation',animationList)
   console.log('Action ', actionList)
 
+  function videoItemTemplates(movie){
+    return  `<div class="primaryPlaylistItem">
+                  <div class="primaryPlaylistItem-image">
+                    <img src="${movie.medium_cover_image}">
+                  </div>
+                  <h4 class="primaryPlaylistItem-title">
+                    ${movie.title}
+                  </h4>
+                </div>`  
+  }
+  // console.log(videoItemTemplates('dasds', 'dasda'));
+
+  actionList.data.movies.forEach( movie => {
+    let HTMLstring = videoItemTemplates(movie);
+    console.log(HTMLstring)
+  });
   //selectores
   // const $home = $('.home');
   const $actionContainer = document.querySelector('#action');
@@ -102,5 +118,7 @@ function traerUser(){
   const modalImage = $modal.querySelector('img');
   const modalTitle = $modal.querySelector('h1');
   const modalDescription = $modal.querySelector('p');
+
+
 
 })()
