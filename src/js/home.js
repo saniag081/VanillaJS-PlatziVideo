@@ -1,7 +1,7 @@
-console.log('hola mundo!');
-const noCambia = "Leonidas";
+// console.log('hola mundo!');
+// const noCambia = "Leonidas";
 
-let cambia = "@LeonidasEsteban"
+// let cambia = "@LeonidasEsteban"
 
 function cambiarNombre(nuevoNombre) {
   cambia = nuevoNombre
@@ -71,21 +71,17 @@ function traerUser(){
 
 //funciones asincronas
 (async function load(){
-  //terror
-  //action
-  //animation
+  //consumir API
   async function getData(url){
     const response = await fetch(url);
     const data = await response.json();
     return data;
   }
+  //obtener Generos de las peliculas
   const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action')
   const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
   const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation')
-  console.log('drama ',dramaList)
-  console.log('animation',animationList)
-  console.log('Action ', actionList)
-
+  //creacion de plantilla
   function videoItemTemplates(movie){
     return  `<div class="primaryPlaylistItem">
                   <div class="primaryPlaylistItem-image">
@@ -97,31 +93,48 @@ function traerUser(){
                 </div>`  
   }
   // console.log(videoItemTemplates('dasds', 'dasda'));
-  const $actionContainer = document.querySelector('#action');
-
-  actionList.data.movies.forEach( movie => {
-    const HTMLstring = videoItemTemplates(movie);
-    //creacion del DOM
+  //creacion del dom
+  function createTamplete(HTMLString){
     const html = document.implementation.createHTMLDocument();
-    html.body.innerHTML = HTMLstring;
-    $actionContainer.append(html.body.children[0]);
-    // console.log(HTMLstring);
-  });
+    html.body.innerHTML = HTMLString;
+
+    return html.body.children[0];
+  }
+
+  //recorrer array peliculas
+  function rederMovieList(list,container){
+    //eliminar elemnto HTML 
+    container.children[0].remove()
+    // actionList.data.movies
+    list.forEach( movie => {
+      const HTMLstring = videoItemTemplates(movie);
+      const movieElemnt = createTamplete(HTMLstring);
+      container.append(movieElemnt);
+      // console.log(HTMLstring);
+    });
+  }
+  
   //selectores
-  // const $home = $('.home');
-  const $dramaContainer = document.querySelector('#drama'); 
-  const $animationContainer = document.querySelector('#animation');
   const $modal = document.querySelector('#modal');
   const $overlay = document.querySelector('#overlay');
   const hideModal = document.querySelector('#hideModal'); 
-
+  
   const $featuringContainer = document.querySelector('#featuring');
   const $from = document.querySelector('#from'); 
   const $home = document.querySelector('#home');
-
+  
   const modalImage = $modal.querySelector('img');
   const modalTitle = $modal.querySelector('h1');
   const modalDescription = $modal.querySelector('p');
+  
+  const $actionContainer = document.querySelector('#action');
+  rederMovieList(actionList.data.movies,$actionContainer);
+  
+  const $dramaContainer = document.querySelector('#drama'); 
+  rederMovieList(dramaList.data.movies, $dramaContainer);
+
+  const $animationContainer = document.querySelector('#animation');
+  rederMovieList(animationList.data.movies, $animationContainer);
 
 
 
