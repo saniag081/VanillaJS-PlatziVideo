@@ -60,7 +60,29 @@ Promise.race([
 // })
 
 //vanillaJs
-fetch('https://randomuser.me/api/')
-  .then( (response)=> response.json() )
-  .then((data)=> console.log(data, data.results[0].name.first))
-  .catch(()=> console.log('algo fallo'))
+function traerUser(){
+  fetch('https://randomuser.me/api/')
+    .then( (response)=> response.json() )
+    .then((data)=> console.log(data, data.results[0].name.first))
+    .catch(()=> console.log('algo fallo'));
+}
+// traerUser();
+
+
+//funciones asincronas
+(async function load(){
+  //terror
+  //action
+  //animation
+  async function getData(url){
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  }
+  const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action')
+  const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
+  const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation')
+  console.log('drama ',dramaList)
+  console.log('animation',animationList)
+  console.log('Action ', actionList)
+})()
