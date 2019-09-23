@@ -77,6 +77,11 @@ function traerUser(){
     const data = await response.json();
     return data;
   }
+  const $from = document.querySelector('#form'); 
+  $from.addEventListener('submit',(evento)=>{
+    evento.preventDefault();
+  })
+
   //obtener Generos de las peliculas
   const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action')
   const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
@@ -101,6 +106,13 @@ function traerUser(){
     return html.body.children[0];
   }
 
+  //evento click a las peliculas
+  function addEVentClck(element){
+    element.addEventListener('click',()=>{
+      alert('click');
+    })
+  }
+
   //recorrer array peliculas
   function rederMovieList(list,container){
     //eliminar elemnto HTML 
@@ -110,6 +122,7 @@ function traerUser(){
       const HTMLstring = videoItemTemplates(movie);
       const movieElemnt = createTamplete(HTMLstring);
       container.append(movieElemnt);
+      addEVentClck(movieElemnt);
       // console.log(HTMLstring);
     });
   }
@@ -120,7 +133,6 @@ function traerUser(){
   const hideModal = document.querySelector('#hideModal'); 
   
   const $featuringContainer = document.querySelector('#featuring');
-  const $from = document.querySelector('#from'); 
   const $home = document.querySelector('#home');
   
   const modalImage = $modal.querySelector('img');
@@ -135,6 +147,8 @@ function traerUser(){
 
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList.data.movies, $animationContainer);
+
+  //Eventos
 
 
 
