@@ -85,4 +85,22 @@ function traerUser(){
   console.log('drama ',dramaList)
   console.log('animation',animationList)
   console.log('Action ', actionList)
+
+  //selectores
+  // const $home = $('.home');
+  const $actionContainer = document.querySelector('#action');
+  const $dramaContainer = document.querySelector('#drama'); 
+  const $animationContainer = document.querySelector('#animation');
+  const $modal = document.querySelector('#modal');
+  const $overlay = document.querySelector('#overlay');
+  const hideModal = document.querySelector('#hideModal'); 
+
+  const $featuringContainer = document.querySelector('#featuring');
+  const $from = document.querySelector('#from'); 
+  const $home = document.querySelector('#home');
+
+  const modalImage = $modal.querySelector('img');
+  const modalTitle = $modal.querySelector('h1');
+  const modalDescription = $modal.querySelector('p');
+
 })()
