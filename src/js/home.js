@@ -97,14 +97,18 @@ function traerUser(){
                 </div>`  
   }
   // console.log(videoItemTemplates('dasds', 'dasda'));
+  const $actionContainer = document.querySelector('#action');
 
   actionList.data.movies.forEach( movie => {
-    let HTMLstring = videoItemTemplates(movie);
-    console.log(HTMLstring)
+    const HTMLstring = videoItemTemplates(movie);
+    //creacion del DOM
+    const html = document.implementation.createHTMLDocument();
+    html.body.innerHTML = HTMLstring;
+    $actionContainer.append(html.body.children[0]);
+    // console.log(HTMLstring);
   });
   //selectores
   // const $home = $('.home');
-  const $actionContainer = document.querySelector('#action');
   const $dramaContainer = document.querySelector('#drama'); 
   const $animationContainer = document.querySelector('#animation');
   const $modal = document.querySelector('#modal');
