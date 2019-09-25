@@ -79,9 +79,27 @@ function traerUser(){
   }
   const $home = document.querySelector('#home');
   const $from = document.querySelector('#form'); 
+
+  //creacion de atributtos
+  const $featuringContainer = document.querySelector('#featuring');
+
+  function setAttributes(element,attributes){
+    for(const atribute in attributes){
+      element.setAttribute(atribute, attributes[atribute]);
+      // getAttribute()
+    }
+  }
+
   $from.addEventListener('submit',(evento)=>{
     evento.preventDefault();
     $home.classList.add('search-active');
+    const $loader = document.createElement('img');
+    setAttributes($loader,{
+      src: 'src/images/loader.gif',
+      height: 50,
+      width: 50
+    })
+    $featuringContainer.append($loader);
   })
 
   //obtener Generos de las peliculas
@@ -134,7 +152,6 @@ function traerUser(){
   const $overlay = document.querySelector('#overlay');
   const $hideModal = document.querySelector('#hide-modal'); 
   
-  const $featuringContainer = document.querySelector('#featuring');
   
   const modalImage = $modal.querySelector('img');
   const modalTitle = $modal.querySelector('h1');
