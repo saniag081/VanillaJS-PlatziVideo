@@ -77,9 +77,11 @@ function traerUser(){
     const data = await response.json();
     return data;
   }
+  const $home = document.querySelector('#home');
   const $from = document.querySelector('#form'); 
   $from.addEventListener('submit',(evento)=>{
     evento.preventDefault();
+    $home.classList.add('search-active');
   })
 
   //obtener Generos de las peliculas
@@ -109,7 +111,7 @@ function traerUser(){
   //evento click a las peliculas
   function addEVentClck(element){
     element.addEventListener('click',()=>{
-      alert('click');
+      showModal();
     })
   }
 
@@ -130,10 +132,9 @@ function traerUser(){
   //selectores
   const $modal = document.querySelector('#modal');
   const $overlay = document.querySelector('#overlay');
-  const hideModal = document.querySelector('#hideModal'); 
+  const $hideModal = document.querySelector('#hide-modal'); 
   
   const $featuringContainer = document.querySelector('#featuring');
-  const $home = document.querySelector('#home');
   
   const modalImage = $modal.querySelector('img');
   const modalTitle = $modal.querySelector('h1');
@@ -148,8 +149,16 @@ function traerUser(){
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList.data.movies, $animationContainer);
 
-  //Eventos
+  function showModal(){
+    $overlay.classList.add('active');
+    $modal.style.animation = 'modalIn .8s forwards';
 
+  }
+
+  $hideModal.addEventListener('click',()=>{
+    $overlay.classList.remove('active');
+    $modal.style.animation = 'modalOut .8s forwards';
+  })
 
 
 })()
