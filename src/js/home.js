@@ -136,8 +136,8 @@ function traerUser(){
   const dramaList = await getData(`${BASE_API}list_movies.json?genre=drama`);
   const animationList = await getData(`${BASE_API}list_movies.json?genre=animation`);
   //creacion de plantilla
-  function videoItemTemplates(movie){
-    return  `<div class="primaryPlaylistItem">
+  function videoItemTemplates(movie, category){
+    return  `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
                   <div class="primaryPlaylistItem-image">
                     <img src="${movie.medium_cover_image}">
                   </div>
@@ -158,17 +158,17 @@ function traerUser(){
   //evento click a las peliculas
   function addEVentClck(element){
     element.addEventListener('click',()=>{
-      showModal();
+      showModal(element);
     })
   }
 
   //recorrer array peliculas
-  function rederMovieList(list,container){
+  function rederMovieList(list,container,category){
     //eliminar elemnto HTML 
     container.children[0].remove()
     // actionList.data.movies
     list.forEach( movie => {
-      const HTMLstring = videoItemTemplates(movie);
+      const HTMLstring = videoItemTemplates(movie,category);
       const movieElemnt = createTamplete(HTMLstring);
       container.append(movieElemnt);
       addEVentClck(movieElemnt);
@@ -187,17 +187,19 @@ function traerUser(){
   const modalDescription = $modal.querySelector('p');
   
   const $actionContainer = document.querySelector('#action');
-  rederMovieList(actionList.data.movies,$actionContainer);
+  rederMovieList(actionList.data.movies,$actionContainer,'action');
   
   const $dramaContainer = document.querySelector('#drama'); 
-  rederMovieList(dramaList.data.movies, $dramaContainer);
+  rederMovieList(dramaList.data.movies, $dramaContainer),'drama';
 
   const $animationContainer = document.querySelector('#animation');
-  rederMovieList(animationList.data.movies, $animationContainer);
+  rederMovieList(animationList.data.movies, $animationContainer,'animation');
 
-  function showModal(){
+  function showModal(element){
     $overlay.classList.add('active');
     $modal.style.animation = 'modalIn .8s forwards';
+    const id = element.dataset.id;
+    const category = element.dataset.category;
 
   }
 
