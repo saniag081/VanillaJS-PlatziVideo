@@ -73,9 +73,19 @@ function traerUser(){
 (async function load(){
   //consumir API
   async function getData(url){
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    // try{
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if(data.data.movie_count > 0){
+        return data;
+      }else{
+        throw new Error('No se encontro ningun resultado');
+      }
+      
+    // }catch(err){
+
+    // }
   }
   const $home = document.querySelector('#home');
   const $from = document.querySelector('#form'); 
@@ -119,16 +129,23 @@ function traerUser(){
 
     //enviar datos
     const data = new FormData($from);
-    const { 
-      data: {
-        movies: pelis
-      }
-    } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
-    console.log(pelis)
-    debugger
-    const HTMLString = featuringTemplate(pelis[0]);
-    // debugger
-    $featuringContainer.innerHTML = HTMLString;
+
+    try{
+      const { 
+        data: {
+          movies: pelis
+        }
+      } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+      console.log(pelis)
+      const HTMLString = featuringTemplate(pelis[0]);
+      // debugger
+      $featuringContainer.innerHTML = HTMLString;
+
+    }catch(error){
+      alert(error.message);
+      $loader.remove();
+      $home.classList.remove('search-active');
+    }
   })
 
   //creacion de plantilla
