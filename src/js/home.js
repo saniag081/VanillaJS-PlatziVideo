@@ -132,9 +132,9 @@ function traerUser(){
   })
 
   //obtener Generos de las peliculas
-  const actionList = await getData(`${BASE_API}list_movies.json?genre=action`);
-  const dramaList = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  const animationList = await getData(`${BASE_API}list_movies.json?genre=animation`);
+  const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
+  const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
+  const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);
   //creacion de plantilla
   function videoItemTemplates(movie, category){
     return  `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
@@ -187,20 +187,38 @@ function traerUser(){
   const modalDescription = $modal.querySelector('p');
   
   const $actionContainer = document.querySelector('#action');
-  rederMovieList(actionList.data.movies,$actionContainer,'action');
+  rederMovieList(actionList,$actionContainer,'action');
   
   const $dramaContainer = document.querySelector('#drama'); 
-  rederMovieList(dramaList.data.movies, $dramaContainer),'drama';
+  rederMovieList(dramaList, $dramaContainer, 'drama');
 
   const $animationContainer = document.querySelector('#animation');
-  rederMovieList(animationList.data.movies, $animationContainer,'animation');
+  rederMovieList(animationList, $animationContainer,'animation');
+
+  function findByID(list,id){
+    return list.find(movie=> movie.id === parseInt(id, 10));
+  }
+
+  function findMovie(id,category){
+    switch(category){
+      case 'action':{
+        return findByID(actionList,id);
+      }
+      case 'drama':{
+        return findByID(dramaList,id);
+      }
+      default:{
+        return findByID(animationList,id);
+      }
+    }
+  }
 
   function showModal(element){
     $overlay.classList.add('active');
     $modal.style.animation = 'modalIn .8s forwards';
     const id = element.dataset.id;
     const category = element.dataset.category;
-
+    const data = findMovie(id,category);
   }
 
   $hideModal.addEventListener('click',()=>{
