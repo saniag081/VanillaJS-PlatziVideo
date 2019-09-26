@@ -202,14 +202,17 @@ function traerUser(){
 
     //obtener Generos de las peliculas
   const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
+  window.localStorage.setItem('actionList', JSON.stringify(actionList));
   const $actionContainer = document.querySelector('#action');
   rederMovieList(actionList,$actionContainer,'action');
     
   const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
+  window.localStorage.setItem('dramaList', JSON.stringify(dramaList));
   const $dramaContainer = document.querySelector('#drama'); 
   rederMovieList(dramaList, $dramaContainer, 'drama');
     
   const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);  
+  window.localStorage.setItem('animationList', JSON.stringify(animationList));
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList, $animationContainer,'animation');
 
