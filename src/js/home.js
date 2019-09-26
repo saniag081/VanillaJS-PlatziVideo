@@ -180,12 +180,7 @@ function traerUser(){
   const $modal = document.querySelector('#modal');
   const $overlay = document.querySelector('#overlay');
   const $hideModal = document.querySelector('#hide-modal'); 
-  
-  
-  const modalImage = $modal.querySelector('img');
-  const modalTitle = $modal.querySelector('h1');
-  const modalDescription = $modal.querySelector('p');
-  
+    
   const $actionContainer = document.querySelector('#action');
   rederMovieList(actionList,$actionContainer,'action');
   
@@ -219,6 +214,13 @@ function traerUser(){
     const id = element.dataset.id;
     const category = element.dataset.category;
     const data = findMovie(id,category);
+
+    const modalImage = $modal.querySelector('img');
+    const modalTitle = $modal.querySelector('h1');
+    const modalDescription = $modal.querySelector('p');
+    modalDescription.textContent = data.description_full;
+    modalImage.setAttribute('src', data.medium_cover_image);
+    modalTitle.textContent = data.title; 
   }
 
   $hideModal.addEventListener('click',()=>{
