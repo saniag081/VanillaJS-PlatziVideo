@@ -131,10 +131,6 @@ function traerUser(){
     $featuringContainer.innerHTML = HTMLString;
   })
 
-  //obtener Generos de las peliculas
-  const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
-  const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);
   //creacion de plantilla
   function videoItemTemplates(movie, category){
     return  `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
@@ -171,6 +167,10 @@ function traerUser(){
       const HTMLstring = videoItemTemplates(movie,category);
       const movieElemnt = createTamplete(HTMLstring);
       container.append(movieElemnt);
+      const image = movieElemnt.querySelector('img');
+      image.addEventListener('load',(event)=>{
+        event.srcElement.classList.add('fadeIn');
+      })
       addEVentClck(movieElemnt);
       // console.log(HTMLstring);
     });
@@ -180,13 +180,18 @@ function traerUser(){
   const $modal = document.querySelector('#modal');
   const $overlay = document.querySelector('#overlay');
   const $hideModal = document.querySelector('#hide-modal'); 
-    
+
+
+    //obtener Generos de las peliculas
+  const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
   const $actionContainer = document.querySelector('#action');
   rederMovieList(actionList,$actionContainer,'action');
-  
+    
+  const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
   const $dramaContainer = document.querySelector('#drama'); 
   rederMovieList(dramaList, $dramaContainer, 'drama');
-
+    
+  const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);  
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList, $animationContainer,'animation');
 
