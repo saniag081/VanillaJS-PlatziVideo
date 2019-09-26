@@ -73,7 +73,6 @@ function traerUser(){
 (async function load(){
   //consumir API
   async function getData(url){
-    // try{
       const response = await fetch(url);
       const data = await response.json();
 
@@ -82,10 +81,12 @@ function traerUser(){
       }else{
         throw new Error('No se encontro ningun resultado');
       }
-      
-    // }catch(err){
+  }
 
-    // }
+  async function getDataUser(url){
+    const response = await fetch(url);
+    const data = await response.json()
+    return data;
   }
   const $home = document.querySelector('#home');
   const $from = document.querySelector('#form'); 
@@ -211,6 +212,30 @@ function traerUser(){
   const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);  
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList, $animationContainer,'animation');
+
+  const $containerUser = document.querySelector('#playlistFriends');
+  const urlUser = 'https://randomuser.me/api/';
+
+  function templateUser(user){
+    return `<li class="playlistFriends-item">
+              <a href="#">
+                <img src="${user.picture.medium}" />
+                <span>
+                  ${user.name.first} ${user.name.last} 
+                </span>
+              </a>
+          </li>`
+  }
+
+  async function renderUser(){
+    for(let i = 0; i <= 8; i++){
+      let {results: user} = await getDataUser(urlUser);
+      const HTMLString = templateUser(user[0]);
+      const crearDom = createTamplete(HTMLString);
+      $containerUser.append(crearDom);
+    }
+  }
+  renderUser()
 
   function findByID(list,id){
     return list.find(movie=> movie.id === parseInt(id, 10));
