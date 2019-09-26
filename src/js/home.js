@@ -293,5 +293,13 @@ function traerUser(){
     $modal.style.animation = 'modalOut .8s forwards';
   })
 
+  //borrar localStorage
+  const ResetQuery = document.querySelector('#ResetQuery');
+
+  ResetQuery.addEventListener('click',()=>{
+    localStorage.clear();
+    location.reload();
+  })
+
 
 })()
