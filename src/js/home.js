@@ -199,20 +199,35 @@ function traerUser(){
   const $overlay = document.querySelector('#overlay');
   const $hideModal = document.querySelector('#hide-modal'); 
 
+//localStorage
+  async function cacheExist(category){
+    const list = `${category}List`;
+    const caheList = window.localStorage.getItem(list);
+    if(caheList){
+      return JSON.parse(caheList);
+    }else{
+      const {data: {movies: data}} = await getData(`${BASE_API}list_movies.json?genre=${category}`);
+      window.localStorage.setItem(list, JSON.stringify(data));
+      return data;
+    }
+  } 
 
     //obtener Generos de las peliculas
-  const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
-  window.localStorage.setItem('actionList', JSON.stringify(actionList));
+  // const {data:{movies: actionList}} = await getData(`${BASE_API}list_movies.json?genre=action`);
+  const actionList = await cacheExist('action');
+  // window.localStorage.setItem('actionList', JSON.stringify(actionList));
   const $actionContainer = document.querySelector('#action');
   rederMovieList(actionList,$actionContainer,'action');
     
-  const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  window.localStorage.setItem('dramaList', JSON.stringify(dramaList));
+  // const {data:{movies: dramaList}} = await getData(`${BASE_API}list_movies.json?genre=drama`);
+  const dramaList = await cacheExist('drama');
+  // window.localStorage.setItem('dramaList', JSON.stringify(dramaList));
   const $dramaContainer = document.querySelector('#drama'); 
   rederMovieList(dramaList, $dramaContainer, 'drama');
     
-  const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);  
-  window.localStorage.setItem('animationList', JSON.stringify(animationList));
+  // const {data:{movies:animationList}} = await getData(`${BASE_API}list_movies.json?genre=animation`);  
+  const animationList = await cacheExist('animation'); 
+  // window.localStorage.setItem('animationList', JSON.stringify(animationList));
   const $animationContainer = document.querySelector('#animation');
   rederMovieList(animationList, $animationContainer,'animation');
 
